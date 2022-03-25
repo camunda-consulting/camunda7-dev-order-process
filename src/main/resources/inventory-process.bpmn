@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1vqhf46" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.0.0-alpha.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.16.0">
+  <bpmn:process id="InventoryProcess" name="Inventory Process" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Inventory check requested">
+      <bpmn:outgoing>Flow_1cbsyfq</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1cbsyfq" sourceRef="StartEvent_1" targetRef="Activity_17wpm3m" />
+    <bpmn:exclusiveGateway id="Gateway_0xp1ng9" name="Everything available?">
+      <bpmn:incoming>Flow_0hb580n</bpmn:incoming>
+      <bpmn:outgoing>Flow_1w3xrs6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1pgbj5d</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0hb580n" sourceRef="Activity_17wpm3m" targetRef="Gateway_0xp1ng9" />
+    <bpmn:sequenceFlow id="Flow_1w3xrs6" name="yes" sourceRef="Gateway_0xp1ng9" targetRef="Gateway_184n1ak">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${orderItemsNum == availableItemsNum}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_1whk0ja" name="Inventory completed">
+      <bpmn:incoming>Flow_10snj2o</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_10snj2o" sourceRef="Activity_04mg6h2" targetRef="Event_1whk0ja" />
+    <bpmn:sequenceFlow id="Flow_1pgbj5d" name="no" sourceRef="Gateway_0xp1ng9" targetRef="Activity_0lm6gzc">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${orderItemsNum &gt; availableItemsNum}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_184n1ak">
+      <bpmn:incoming>Flow_1w3xrs6</bpmn:incoming>
+      <bpmn:incoming>Flow_1n6y268</bpmn:incoming>
+      <bpmn:outgoing>Flow_1hbx4lc</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1hbx4lc" sourceRef="Gateway_184n1ak" targetRef="Activity_04mg6h2" />
+    <bpmn:sequenceFlow id="Flow_1n6y268" sourceRef="Activity_0lm6gzc" targetRef="Gateway_184n1ak" />
+    <bpmn:serviceTask id="Activity_17wpm3m" name="Check availability" camunda:type="external" camunda:topic="availabilityCheck">
+      <bpmn:incoming>Flow_1cbsyfq</bpmn:incoming>
+      <bpmn:outgoing>Flow_0hb580n</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0lm6gzc" name="Remove unavailable items" camunda:type="external" camunda:topic="itemRemoval">
+      <bpmn:incoming>Flow_1pgbj5d</bpmn:incoming>
+      <bpmn:outgoing>Flow_1n6y268</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_04mg6h2" name="Reserve available items" camunda:type="external" camunda:topic="itemReservation">
+      <bpmn:incoming>Flow_1hbx4lc</bpmn:incoming>
+      <bpmn:outgoing>Flow_10snj2o</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="InventoryProcess">
+      <bpmndi:BPMNEdge id="Flow_1n6y268_di" bpmnElement="Flow_1n6y268">
+        <di:waypoint x="600" y="300" />
+        <di:waypoint x="660" y="300" />
+        <di:waypoint x="660" y="202" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hbx4lc_di" bpmnElement="Flow_1hbx4lc">
+        <di:waypoint x="685" y="177" />
+        <di:waypoint x="720" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1pgbj5d_di" bpmnElement="Flow_1pgbj5d">
+        <di:waypoint x="450" y="202" />
+        <di:waypoint x="450" y="300" />
+        <di:waypoint x="500" y="300" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="459" y="248" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10snj2o_di" bpmnElement="Flow_10snj2o">
+        <di:waypoint x="820" y="177" />
+        <di:waypoint x="882" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1w3xrs6_di" bpmnElement="Flow_1w3xrs6">
+        <di:waypoint x="475" y="177" />
+        <di:waypoint x="635" y="177" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="538" y="159" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hb580n_di" bpmnElement="Flow_0hb580n">
+        <di:waypoint x="370" y="177" />
+        <di:waypoint x="425" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1cbsyfq_di" bpmnElement="Flow_1cbsyfq">
+        <di:waypoint x="215" y="177" />
+        <di:waypoint x="270" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="159" y="202" width="78" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0xp1ng9_di" bpmnElement="Gateway_0xp1ng9" isMarkerVisible="true">
+        <dc:Bounds x="425" y="152" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="424" y="114.5" width="52" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1whk0ja_di" bpmnElement="Event_1whk0ja">
+        <dc:Bounds x="882" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="875" y="202" width="51" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_184n1ak_di" bpmnElement="Gateway_184n1ak" isMarkerVisible="true">
+        <dc:Bounds x="635" y="152" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1fznbsu_di" bpmnElement="Activity_17wpm3m">
+        <dc:Bounds x="270" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0vodm7k_di" bpmnElement="Activity_0lm6gzc">
+        <dc:Bounds x="500" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1lc4hzz_di" bpmnElement="Activity_04mg6h2">
+        <dc:Bounds x="720" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
