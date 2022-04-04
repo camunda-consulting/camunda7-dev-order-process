@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.camunda.training</groupId>
-  <artifactId>camunda7-dev-order-process-client</artifactId>
+  <artifactId>camunda7-order-process-app</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <name>Automating Order Process</name>
   <description>Example project for Camunda 7 Training for Developers</description>
@@ -120,7 +120,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.6.0</version>
         <configuration>
-          <mainClass>com.camunda.training.CamundaApplication</mainClass>
+          <mainClass>com.camunda.training.ExternalTaskWorkerApplication</mainClass>
         </configuration>
       </plugin>
  -->  
