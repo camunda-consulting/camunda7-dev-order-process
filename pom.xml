@@ -7,7 +7,7 @@
   <description>Example project for Camunda 7 Training for Developers</description>
   
   <properties>
-    <camunda.version>7.18.0</camunda.version>
+    <camunda.version>7.19.0</camunda.version>
     <springBoot.version>2.6.4</springBoot.version>
 
     <maven.compiler.source>1.8</maven.compiler.source>
